@@ -7,7 +7,7 @@ const Attendance = require("../models/Attendance");
 // GET all attendance
 router.get("/", async (req, res) => {
   try {
-    const records = await Attendance.find().populate("employee");
+    const records = await Attendance.find();
     res.json(records);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -22,6 +22,16 @@ router.post("/", async (req, res) => {
     res.json(record);
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+});
+
+// DELETE all attendance records (for cleanup)
+router.delete("/all", async (req, res) => {
+  try {
+    await Attendance.deleteMany({});
+    res.json({ message: "All attendance records deleted" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

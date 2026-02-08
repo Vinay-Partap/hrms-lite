@@ -1,4 +1,7 @@
-function Dashboard({ employees, records }) {
+function Dashboard({ employees = [], records = [] }) {
+  const totalEmployees = employees.length;
+  const totalRecords = records.length;
+
   return (
     <div className="card">
       <h2>Dashboard</h2>
@@ -6,12 +9,12 @@ function Dashboard({ employees, records }) {
       <div className="dashboard-grid">
         <div className="stat-box">
           <h3>Total Employees</h3>
-          <p>{employees.length}</p>
+          <p>{totalEmployees}</p>
         </div>
 
         <div className="stat-box">
           <h3>Total Attendance Records</h3>
-          <p>{records.length}</p>
+          <p>{totalRecords}</p>
         </div>
       </div>
 
@@ -41,6 +44,12 @@ function Dashboard({ employees, records }) {
           })}
         </tbody>
       </table>
+
+      {employees.length === 0 && (
+        <p style={{ marginTop: "16px", textAlign: "center", color: "#666" }}>
+          No employees found
+        </p>
+      )}
     </div>
   );
 }

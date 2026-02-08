@@ -12,6 +12,7 @@ body {
   background-color: #f5f7fb;
   color: #1f2937;
   min-height: 100vh;
+  line-height: 1.6;
 }
 
 /* =========================
@@ -141,12 +142,14 @@ select {
   border: 1px solid #d1d5db;
   font-size: 14px;
   background-color: #ffffff;
+  font-family: inherit;
 }
 
 input:focus,
 select:focus {
   outline: none;
   border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 body.dark input,
@@ -174,11 +177,17 @@ button {
   border-radius: 8px;
   cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
   transition: background-color 0.2s ease;
 }
 
 button:hover {
   background-color: #1e40af;
+}
+
+button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
 }
 
 .btn-danger {
@@ -191,6 +200,9 @@ button:hover {
 
 .btn-inline {
   margin-left: 12px;
+  width: auto;
+  padding: 8px 12px;
+  font-size: 13px;
 }
 
 .btn-top {
@@ -216,10 +228,16 @@ table td {
 table th {
   background-color: #f3f4f6;
   font-weight: 600;
+  color: #374151;
 }
 
 body.dark table th {
-  background-color: #020617;
+  background-color: #1e293b;
+  color: #e5e7eb;
+}
+
+body.dark table td {
+  border-bottom-color: #334155;
 }
 
 /* =========================

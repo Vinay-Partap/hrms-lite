@@ -13,6 +13,8 @@ function App() {
   const [employees, setEmployees] = useState([]);
   const [records, setRecords] = useState([]);
 
+  const BASE_URL = "https://hrms-lite-backend-57v7.onrender.com";
+
   /* Dark mode persistence */
   useEffect(() => {
     document.body.className = darkMode ? "dark" : "";
@@ -21,13 +23,24 @@ function App() {
 
   /* Fetch data */
   useEffect(() => {
-    fetch("http://localhost:5000/api/employees")
-      .then(res => res.json())
-      .then(setEmployees);
+    const fetchData = async () => {
+      try {
+        const [empRes, attRes] = await Promise.all([
+          fetch(`${BASE_URL}/api/employees`),
+          fetch(`${BASE_URL}/api/attendance`)
+        ]);
 
-    fetch("http://localhost:5000/api/attendance")
-      .then(res => res.json())
-      .then(setRecords);
+        const empData = await empRes.json();
+        const attData = await attRes.json();
+
+        setEmployees(empData);
+        setRecords(attData);
+      } catch (err) {
+        console.error("Failed to fetch data", err);
+      }
+    };
+
+    fetchData();
   }, []);
 
   /* Landing Page */
@@ -54,6 +67,13 @@ function App() {
           </button>
 
           <button
+            className={activePage === "employees" ? "active" : ""}
+            onClick={() => setActivePage("employees")}
+          >
+            👥 Employees
+          </button>
+
+          <button
             className={activePage === "mark" ? "active" : ""}
             onClick={() => setActivePage("mark")}
           >
@@ -67,7 +87,7 @@ function App() {
             📁 Records
           </button>
 
-          <button onClick={() => setDarkMode(!darkMode)}>
+          <button onClick={() => setDarkMode(!darkMode)} title="Toggle dark mode">
             🌙
           </button>
         </div>
@@ -79,6 +99,10 @@ function App() {
           <Dashboard employees={employees} records={records} />
         )}
 
+        {activePage === "employees" && (
+          <EmployeePage />
+        )}
+
         {activePage === "mark" && (
           <AttendancePage mode="mark" />
         )}
@@ -86,8 +110,6 @@ function App() {
         {activePage === "records" && (
           <AttendancePage mode="records" />
         )}
-
-        <EmployeePage />
       </div>
     </>
   );

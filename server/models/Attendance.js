@@ -1,12 +1,22 @@
 const mongoose = require("mongoose");
 
 const AttendanceSchema = new mongoose.Schema({
-  employee: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Employee",
+  employeeId: {
+    type: String,
+    required: true
   },
-  date: String,
-  status: String,
+  employeeName: {
+    type: String,
+    required: true
+  },
+  date: {
+    type: String,
+    required: true
+  },
+  status: {
+    type: String,
+    required: true
+  }
 });
 
 module.exports = mongoose.model("Attendance", AttendanceSchema);
