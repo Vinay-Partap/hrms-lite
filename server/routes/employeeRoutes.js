@@ -1,3 +1,5 @@
+
+console.log("Employee routes file loaded");
 console.log("Employee routes loaded");
 
 const express = require("express");
