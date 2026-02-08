@@ -1,3 +1,5 @@
+console.log("Employee routes loaded");
+
 const express = require("express");
 const router = express.Router();
 const Employee = require("../models/Employee");
