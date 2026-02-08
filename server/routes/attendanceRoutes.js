@@ -1,5 +1,5 @@
-
 console.log("Attendance routes file loaded");
+
 const express = require("express");
 const router = express.Router();
 const Attendance = require("../models/Attendance");
@@ -25,4 +25,5 @@ router.post("/", async (req, res) => {
   }
 });
 
+// 👇 THIS WAS MISSING (CRITICAL)
 module.exports = router;
