@@ -1,31 +1,36 @@
 const express = require("express");
+const router = express.Router();
 const Employee = require("../models/Employee");
 
-const router = express.Router();
-
-// Add employee
-router.post("/", async (req, res) => {
+// GET all employees
+router.get("/", async (req, res) => {
   try {
-    const employee = await Employee.create(req.body);
-    res.status(201).json(employee);
+    const employees = await Employee.find();
+    res.json(employees);
   } catch (err) {
-    if (err.code === 11000) {
-      return res.status(409).json({ message: "Employee ID already exists" });
-    }
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Get all employees
-router.get("/", async (req, res) => {
-  const employees = await Employee.find();
-  res.json(employees);
+// ADD employee
+router.post("/", async (req, res) => {
+  try {
+    const employee = new Employee(req.body);
+    await employee.save();
+    res.json(employee);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
 
-// Delete employee
+// DELETE employee
 router.delete("/:id", async (req, res) => {
-  await Employee.findByIdAndDelete(req.params.id);
-  res.json({ message: "Employee deleted" });
+  try {
+    await Employee.findByIdAndDelete(req.params.id);
+    res.json({ message: "Employee deleted" });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
 
 module.exports = router;

@@ -1,31 +1,26 @@
 const express = require("express");
+const router = express.Router();
 const Attendance = require("../models/Attendance");
 
-const router = express.Router();
-
-// Mark attendance
-router.post("/", async (req, res) => {
+// GET all attendance
+router.get("/", async (req, res) => {
   try {
-    const record = await Attendance.create(req.body);
-    res.status(201).json(record);
+    const records = await Attendance.find().populate("employee");
+    res.json(records);
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Get ALL attendance records
-router.get("/", async (req, res) => {
-  const records = await Attendance.find().sort({ date: -1 });
-  res.json(records);
+// ADD attendance
+router.post("/", async (req, res) => {
+  try {
+    const record = new Attendance(req.body);
+    await record.save();
+    res.json(record);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 });
-
-// Get attendance for one employee
-router.get("/:employeeId", async (req, res) => {
-  const records = await Attendance.find({
-    employeeId: req.params.employeeId
-  });
-  res.json(records);
-});
-
 
 module.exports = router;
